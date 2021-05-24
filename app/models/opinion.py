@@ -34,19 +34,22 @@ class Opinion:
         for key, args in self.selectors.items():
             setattr(self, key, extract_element(opinion, *args))
         self.opinion_id = opinion["data-entry-id"]
+        return self
 
-        opinion_elements["recommendation"] = True if opinion_elements[
-            "recommendation"] == "Polecam" else False if opinion_elements["recommendation"] == "Nie polecam" else None
-        opinion_elements["stars"] = float(
-            opinion_elements["stars"].split("/")[0].replace(",", "."))
-        opinion_elements["purchased"] = bool(
-            opinion_elements["purchased"])
-        opinion_elements["useful"] = int(opinion_elements["useful"])
-        opinion_elements["useless"] = int(opinion_elements["useless"])
+    def transform_opinion(self):
+        self.recommendation = True if self.recommendation == "Polecam" else False if self.recommendation == "Nie polecam" else None
+        self.stars = float(self.stars.split("/")[0].replace(",", "."))
+        self.purchased = bool(self.purchased)
+        self.useful = int(self.useful)
+        self.useless = int(self.useless)
+        return self
     
     def __str__(self):
-        pass
+        return f"opinion_id: {self.opinion_id}<br>" + "<br>".join(f"{key}: {str(getattr(self, key))}" for key in self.selectors.keys())
 
-    def __dict__(self):
-        pass
+    def __repr__(self):
+        return f"Opinion(opinion_id={self.opinion_id}" + ", ".join(f"{key}={str(getattr(self, key))}" for key in self.selectors.keys()) + ")"
+
+    def to_dict(self):
+        return {"opinion_id": self.opinion_id} | {key: getattr(self, key) for key in self.selectors.keys()}
         
