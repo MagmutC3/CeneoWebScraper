@@ -40,3 +40,11 @@ class Product:
     def save_to_json(self):
         with open(f"app/products/{self.product_id}.json", "w", encoding="UTF-8") as fp:
             json.dump(self.to_dict(), fp, indent=4, ensure_ascii=False)
+
+    def read_from_json(self):
+        with open(f"app/products/{self.product_id}.json", "r", encoding="UTF-8") as fp:
+            prod = json.load(fp)
+        self.product_name = prod['product_name']
+        opinions = prod['opinions']
+        for opinion in opinions:
+            self.opinions.append(Opinion(**opinion))
