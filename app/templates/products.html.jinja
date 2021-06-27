@@ -4,7 +4,15 @@
     <h2>Lista produktów</h2>
     <ul class="list-group">
         {% for product in products %}
-            <li class="list-group-item"><a href="{{ url_for('opinions', product_id=product) }}">{{ product }}</a></li>
+            <li class="list-group-item">
+                <a href="{{ url_for('opinions', product_id=product) }}">{{ product }}</a><br>
+                <p>Nazwa: {{ stats[product]["name"] }}</p>
+                <p>Liczba opini: {{ stats[product]["opinions"] }}</p>
+                <p>Liczba wad: {{ stats[product]["cons"] }}</p>
+                <p>Liczba zalet: {{ stats[product]["pros"] }}</p>
+                <p>Średnia ocena: {{ stats[product]["average score"] }}</p>
+                <a href="{{ url_for('download_json', file_name=product) }}">Pobierz plik .json</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock middle %}
